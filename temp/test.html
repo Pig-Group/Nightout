@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Place searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 80%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+
+</head>
+
+<body>
+    <div id="map"></div>
+    <button id="restaurants">Restaurant
+    <button id="lodging">Lodging
+    <button id="parking">Parking
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHxneOmC7wPyuap2-wMrNaTi9_i3o4Abo&libraries=places&callback=initMap"
+                    async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="test.js"></script>
+</body>
+
+</html>
