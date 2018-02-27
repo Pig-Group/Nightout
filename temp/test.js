@@ -5,9 +5,11 @@
 
 var map;
 var infowindow;
-var type=["restaurant"];
+var type=[];
+var lat= 33.669444;
+var lng= -117.823056;
 function initMap() {
-    var pyrmont = { lat: 33.669444, lng: -117.823056 };
+    var pyrmont = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
         center: pyrmont,
         zoom: 15
@@ -26,6 +28,7 @@ function callback(results, status) {
             createMarker(results[i]);
         }
     }
+    
 }
 function createMarker(place) {
     var placeLoc = place.geometry.location;
@@ -34,9 +37,28 @@ function createMarker(place) {
         position: place.geometry.location
     });
     google.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent(place.name,place.rating);
+        label(place);
         infowindow.open(map, this);
     });
+}
+function label(place)
+{
+    if(place.price_level==undefined&&place.rating==undefined)
+    {
+        infowindow.setContent("Name: "+place.name);
+    }
+    else if(place.price_level==undefined)
+    {
+        infowindow.setContent("Name: "+place.name+" Rating: "+place.rating.toString());
+    }
+    else if(place.rating==undefined)
+    {
+        infowindow.setContent("Name: "+place.name+" Price Range "+place.price_level.toString());
+    }
+    else
+    {
+        infowindow.setContent("Name: "+place.name+" Rating: "+place.rating.toString()+" Price Range "+place.price_level);
+    }
 }
 $("#lodging").on('click',function(){
     type[0]="lodging";
