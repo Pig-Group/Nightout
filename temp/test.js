@@ -12,7 +12,7 @@ function initMap() {
     var pyrmont = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
         center: pyrmont,
-        zoom: 15
+        zoom: 12
     });
     infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
