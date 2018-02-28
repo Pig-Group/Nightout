@@ -13,7 +13,7 @@ function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
         center: local,
-        zoom: 15
+        zoom: 12
     });
     infowindow = new google.maps.InfoWindow();
     service = new google.maps.places.PlacesService(map);
@@ -31,20 +31,6 @@ function initMap() {
         radius: 5000,
         type
     }, callback);
-    // for(i=0;i<places.length;i++)
-    // {
-    //     service.getDetails(places[i], function (details, status) {
-    //         var result = $("<div>");
-    //         var label = $("<p>");
-    //         console.log(details.name);
-    //         console.log(details.formatted_address);
-    //         console.log(details.rating);
-    //         console.log(details.openingHours.periods)
-    //         //label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
-    //         result.append(label);
-    //         $("#display").append(result);
-    //     });
-    // }
 }
 function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -79,47 +65,21 @@ function createMarker(place) {
         infowindow.open(map, this);
     });
 }
-// if (status === google.maps.places.PlacesServiceStatus.OK) {
-//     for (var i = 0; i < results.length; i++) {
-//         var placeLoc = results[i].geometry.location;
-//         var marker = new google.maps.Marker({
-//             map: map,
-//             position: placeLoc,
-//             place: {
-//                 placeId: results[i].place_id,
-//                 location: placeLoc
-//             }
-//         });
-//         google.maps.event.addListener(marker, 'click', function () {
-//             label(results[i]);
-//             infowindow.open(map, this);
-//         });
-//     }
-// }
 function label(place) {
-    //console.log(place.formatted_address);
-    // service.getDetails(place, function (details, status) {
-    //     var result = $("<div>");
-    //     var label = $("<p>");
-    //     console.log(details.name);
-    //     console.log(details.formatted_address);
-    //     console.log(details.rating);
-    //     console.log(details.openingHours.periods)
-    //     label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
-    //     result.append(label);
-    //     $("#display").append(result);
-    // });
+    console.log(place.formatted_address);
     if (place.price_level == undefined && place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name);
+        infowindow.setContent("<strong>Name:</strong> " + place.name);
     }
     else if (place.price_level == undefined) {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString());
+
     }
     else if (place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name + " Price Range " + place.price_level.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Price Range:</strong> " + place.price_level.toString());
     }
+
     else {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString() + " Price Range " + place.price_level);
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString() + "<br><strong>Price Range:</strong> " + place.price_level);
     }
 }
 $("#lodging").on('click', function () {
