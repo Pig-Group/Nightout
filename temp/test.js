@@ -13,7 +13,7 @@ function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
         center: local,
-        zoom: 12
+        zoom: 12,
     });
     infowindow = new google.maps.InfoWindow();
     service = new google.maps.places.PlacesService(map);
