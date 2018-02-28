@@ -31,13 +31,12 @@ function initMap() {
         radius: 5000,
         type
     }, callback);
-    // for(i=0;places.length;i++)
+    // for(i=0;i<places.length;i++)
     // {
-    //     console.log("hi")
-    //     service.getDetails(places[i].place_id, function(details,status){
-    //         var result=$("<div>");
+    //     service.getDetails(places[i], function (details, status) {
+    //         var result = $("<div>");
     //         var label = $("<p>");
-    //         label.text(details.name+" "+details.formatted_address+" "+details.rating+" "+details.openingHours.periods);
+    //         label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
     //         result.append(label);
     //         $("#display").append(result);
     //     });
@@ -47,6 +46,7 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
+            places.push({placeId: results[i].place_id});
         }
     }
 }
@@ -93,7 +93,7 @@ function createMarker(place) {
 //     }
 // }
 function label(place) {
-    console.log(place.formatted_address);
+    //console.log(place.formatted_address);
     if (place.price_level == undefined && place.rating == undefined) {
         infowindow.setContent("Name: " + place.name);
     }
