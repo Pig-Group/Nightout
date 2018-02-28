@@ -33,29 +33,37 @@ var userInput = function (keyword, startDate, endDate, location, latitude, longi
     this.latitude = latitude;
     this.longitude = longitude;
     this.geoPoint = function () {
-        if(this.latitude ==='' || this.latitude==null || this.longitude==='' || this.longitude==null){
+        if (this.latitude === '' || this.latitude == null || this.longitude === '' || this.longitude == null) {
             return '';
         }
-        else{
-        return this.latitude + "," + this.longitude;
+        else {
+            return this.latitude + "," + this.longitude;
         }
     };
 }
 
 // Main functions are here
 var getUserCoords = function () {
-    var latitude;
-    var longitude;
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            windowLatitude = latitude;
-            windowLongitude = longitude;
-        });
-    }
-    else {
-        console.log("<h4>Your browser doesn't support.</h4>");
+    if (localStorage.getItem("windowLatitude") === null || localStorage.getItem("windowLongitude") === null) {
+        var latitude;
+        var longitude;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+                if (typeof (Storage) !== "undefined") {
+                    localStorage.setItem("windowLatitude", latitude);
+                    localStorage.setItem("windowLongitude", longitude);
+                }
+                else {
+                    windowLatitude = latitude;
+                    windowLongitude = longitude;
+                }
+            });
+        }
+        else {
+            console.log("<h4>Your browser doesn't support.</h4>");
+        }
     }
 }
 function tmEventSearch(userInput) {
@@ -167,17 +175,17 @@ function tmEventSearch(userInput) {
                         var imageUrlLarge = "";
                     }
                 }
-               
-                var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge);
-                var imageUrlSmallTag=$("<img>");
-                imageUrlSmallTag.attr("src",imageUrlSmall)
-                displayResults.append(imageUrlSmallTag);
-                var idTag=$("<span>");
-                idTag.html(id+"<br>");
-                displayResults.append(idTag);
-                var nameTag=$("<h5>");
 
-                nameTag.html("<a href='#' >"+name+"</a>");
+                var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge);
+                var imageUrlSmallTag = $("<img>");
+                imageUrlSmallTag.attr("src", imageUrlSmall)
+                displayResults.append(imageUrlSmallTag);
+                var idTag = $("<span>");
+                idTag.html(id + "<br>");
+                displayResults.append(idTag);
+                var nameTag = $("<h5>");
+
+                nameTag.html("<a href='#' >" + name + "</a>");
                 displayResults.append(nameTag);
 
                 tmEventList.push(tmEventSingle);
@@ -190,7 +198,7 @@ function tmEventSearch(userInput) {
     });
     console.log(tmEventList);
     return tmEventList;
-  
+
 }
 
 function displaySearchResult(tmEventList) {
@@ -207,15 +215,17 @@ $("#btnSubmit").on("click", function (event) {
     var startDate = $("#startDate").val().trim();
     var endDate = $("#endDate").val().trim();
     var location = $("#location").val().trim();
-    console.log(keyword);
-    console.log(startDate);
-    console.log(endDate);
-    console.log(location);
-    console.log(windowLatitude);
-    console.log(windowLongitude);
-    var myUserInput = new userInput(keyword, startDate, endDate, location, windowLatitude, windowLongitude);
-    var mytmEventList= tmEventSearch(myUserInput);
-   
+    if(localStorage.getItem("windowLatitude")!==null || localStorage.getItem("")!==null){
+        var currentLatitude=localStorage.getItem("windowLatitude");
+        var currentLongitude=localStorage.getItem("windowLongitude");
+    }
+    else{
+        var currentLatitude=windowLatitude;
+        var currentLongitude=windowLongitude;
+    }
+    var myUserInput = new userInput(keyword, startDate, endDate, location, currentLatitude, currentLongitude);
+    var mytmEventList = tmEventSearch(myUserInput);
+
 });
 $("#btnReset").on("click", function (event) {
     event.preventDefault();
@@ -225,4 +235,5 @@ $("#btnReset").on("click", function (event) {
     $("#endDate").val("");
     $("#location").val("");
 })
+
 getUserCoords();
