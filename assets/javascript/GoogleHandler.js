@@ -16,6 +16,7 @@ function setValues(){
         var instance=inputs[i];
         if(instance.id==eventID)
         {
+            eventName=instance.name;
             lat=parseFloat(instance.venuesLatitude);
             lng=parseFloat(instance.venuesLongitude);
         }
