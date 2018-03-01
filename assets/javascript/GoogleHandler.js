@@ -1,13 +1,31 @@
 
 //Extensive code taken from the google places documentation examples
-
 var map;
 var infowindow;
 var service;
-var type = [];
+var type = ["restaurant"];
 var lat = 33.669444;
 var lng = -117.823056;
-var eventName = "PlaceHolder";
+var eventName = "Event";
+function setValues(){
+    var temp=localStorage.getItem("tmEventListString");
+    var inputs=JSON.parse(temp);
+    var eventID=window.location.href.substring(window.location.href.indexOf("=")+1);
+    console.log(eventID);
+    for(i=0;i<inputs.length;i++)
+    {
+        var instance=inputs[i];
+        if(instance.id==eventID)
+        {
+            console.log("confirm");
+            lat=parseFloat(instance.venuesLatitude);
+            lng=parseFloat(instance.venuesLongitude);
+            console.log(lat);
+            console.log(lng);
+        }
+    }
+}
+setValues();
 function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('eventMap'), {
