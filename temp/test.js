@@ -31,26 +31,12 @@ function initMap() {
         radius: 5000,
         type
     }, callback);
-    // for(i=0;i<places.length;i++)
-    // {
-    //     service.getDetails(places[i], function (details, status) {
-    //         var result = $("<div>");
-    //         var label = $("<p>");
-    //         console.log(details.name);
-    //         console.log(details.formatted_address);
-    //         console.log(details.rating);
-    //         console.log(details.openingHours.periods)
-    //         //label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
-    //         result.append(label);
-    //         $("#display").append(result);
-    //     });
-    // }
 }
 function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            places.push({ placeId: results[i].place_id });
+            places.push({ placeId: results[i].place_id,name:results[i].name });
         }
     }
 }
@@ -60,55 +46,12 @@ function createMarker(place) {
         map: map,
         position: placeLoc,
     });
-    // places.push(place);
-    // var request = { reference: place.reference };
-    // service.getDetails(request, function (details, status) {
-    //     // google.maps.event.addListener(marker, 'click', function () {
-    //     //     label(details);
-    //     //     //infowindow.setContent(details.name + "<br />" + details.formatted_address + "<br />" + details.website + "<br />" + details.rating + "<br />" + details.formatted_phone_number);
-    //     //     infowindow.open(map, this);
-    //     // });
-    //     // var result = $("<div>");
-    //     // var label = $("<p>");
-    //     // label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
-    //     // result.append(label);
-    //     // $("#display").append(result);
-    // });
     google.maps.event.addListener(marker, 'click', function () {
         label(place);
         infowindow.open(map, this);
     });
 }
-// if (status === google.maps.places.PlacesServiceStatus.OK) {
-//     for (var i = 0; i < results.length; i++) {
-//         var placeLoc = results[i].geometry.location;
-//         var marker = new google.maps.Marker({
-//             map: map,
-//             position: placeLoc,
-//             place: {
-//                 placeId: results[i].place_id,
-//                 location: placeLoc
-//             }
-//         });
-//         google.maps.event.addListener(marker, 'click', function () {
-//             label(results[i]);
-//             infowindow.open(map, this);
-//         });
-//     }
-// }
 function label(place) {
-    //console.log(place.formatted_address);
-    // service.getDetails(place, function (details, status) {
-    //     var result = $("<div>");
-    //     var label = $("<p>");
-    //     console.log(details.name);
-    //     console.log(details.formatted_address);
-    //     console.log(details.rating);
-    //     console.log(details.openingHours.periods)
-    //     label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
-    //     result.append(label);
-    //     $("#display").append(result);
-    // });
     if (place.price_level == undefined && place.rating == undefined) {
         infowindow.setContent("Name: " + place.name);
     }
