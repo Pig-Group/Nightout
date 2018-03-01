@@ -9,7 +9,9 @@
 
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 </head>
 
@@ -33,45 +35,45 @@
     </div>
 
 
-        <form class="pure-form pure-form-stacked">
+    <form class="pure-form pure-form-stacked">
 
-            <label for="event">
-                <h4>Event Name</h4>
-            </label>
-            <input id="keyword" type="text" placeholder="Name of Event (Keyword)">
+        <label for="keyword">
+            <h4>Event Name</h4>
+        </label>
+        <input id="keyword" type="text" placeholder="Name of Event (Keyword)">
 
-            <table>
-                <td>
-                    <h4>Start Date</h4>
-                    <input id="startDate" type="date" name="startdate" placeholder="Start Date">
-                </td>
-                <td>
-                    <h4>End Date</h4>
-                    <input id="endDate" type="date" name="enddate" placeholder="End Date">
-                </td>
-            </table>
+        <table>
+            <td>
+                <h4>Start Date</h4>
+                <input id="startDate" type="date" name="startdate" placeholder="Start Date">
+            </td>
+            <td>
+                <h4>End Date</h4>
+                <input id="endDate" type="date" name="enddate" placeholder="End Date">
+            </td>
+        </table>
 
-            <label for="city">
-                <h4>Location</h4>
-            </label>
-            <input id="location" type="text" placeholder="City or Zip Code">
+        <label for="city">
+            <h4>Location</h4>
+        </label>
+        <input id="location" type="text" placeholder="City or Zip Code">
 
-            <button type="submit" class="pure-button pure-button-primary" id="btnSubmit">Search</button>
-            <button type="reset" class="pure-button pure-button-primary" id="btnReset">Reset</button>
+        <button type="submit" class="pure-button pure-button-primary" id="btnSubmit">Search</button>
+        <button type="reset" class="pure-button pure-button-primary" id="btnReset">Reset</button>
 
-        </form>
-   
-    <div class="displayResults">
-        <span id="eventDate">Event Date</span>
-        <span id="eventName">Event Date</span>
+    </form>
+
+
+    <div id="displayResults">
+
     </div>
+
 
     <footer>
         &copy; Copyright TEAM PIG
     </footer>
 
-
-
+    <script src="assets/javascript/javascript.js"></script>
 </body>
 
 </html>
