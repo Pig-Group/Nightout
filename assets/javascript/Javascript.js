@@ -54,6 +54,8 @@ var getUserCoords = function () {
                 if (typeof (Storage) !== "undefined") {
                     localStorage.setItem("windowLatitude", latitude);
                     localStorage.setItem("windowLongitude", longitude);
+                    windowLatitude = latitude;
+                    windowLongitude = longitude;
                 }
                 else {
                     windowLatitude = latitude;
@@ -62,7 +64,12 @@ var getUserCoords = function () {
             });
         }
         else {
-            console.log("<h4>Your browser doesn't support.</h4>");
+            console.log("Your browser doesn't support geolocation.");
+            alert("Your browser doesn't support geolocation.");
+            var displayResults = $("#displayResults");
+            var test = $("<h1>");
+            test.html("Your browser doesn't support geolocation.");
+            displayResults.html(test);
         }
     }
 }
@@ -93,14 +100,14 @@ function tmEventSearch(userInput) {
         queryParameters += "&city=" + userInput.location;
     }
     var queryUrl = rootUrl + queryParameters;
-    console.log(queryUrl);
+    
     $("#displayResults").empty();
     $.ajax({
         type: "GET",
         url: queryUrl,
-        async: true,
-        dataType: "JSON",
-        success: function (response) {
+        async: false,
+        dataType: "JSON"
+    }).done(function(response){
             var countEvents = response.page.totalElements;
             var displayResults = $("#displayResults");
             if (countEvents === 0) {
@@ -109,9 +116,7 @@ function tmEventSearch(userInput) {
                 displayResults.html(test);
                 return false;
             }
-
             console.log("Number of events in your search is: " + countEvents);
-            //  console.log(response._embedded)
             for (var i = 0; i < response._embedded.events.length; i++) {
                 var id = response._embedded.events[i].id;
                 var name = response._embedded.events[i].name;
@@ -135,9 +140,9 @@ function tmEventSearch(userInput) {
                     }
                 }
                 else {
-                    var maxPrice = "";
-                    var minPrice = "";
-                    var currencyPrice = "";
+                    var maxPrice = "0.00";
+                    var minPrice = "0.00";
+                    var currencyPrice = "USD";
                 }
                 if (response._embedded.events[i]._embedded.hasOwnProperty("venues")) {
                     if (response._embedded.events[i]._embedded.venues.length > 0) {
@@ -147,9 +152,9 @@ function tmEventSearch(userInput) {
                     }
                 }
                 else {
-                    var venuesAddress = "tba";
-                    var venuesCity = "tba";
-                    var venuesState = "tba";
+                    var venuesAddress = "TBA";
+                    var venuesCity = "TBA";
+                    var venuesState = "TBA";
                 }
                 if (response._embedded.events[i].hasOwnProperty("images")) {
                     var sFlag = false;
@@ -162,52 +167,105 @@ function tmEventSearch(userInput) {
                                 var imageUrlSmall = response._embedded.events[i].images[j].url;
                                 sFlag = true;
                             }
-                            if (width > 500 && height > 500 && !lFlag) {
+                            if (width > 500 && height > 350 && height < 400 && !lFlag) {
                                 var imageUrlLarge = response._embedded.events[i].images[j].url;
                                 lFlag = true;
                             }
                         }
-                        if (!sFlag) { var imageUrlSmall = ""; }
-                        if (!lFlag) { var imageUrlLarge = ""; }
+                        if (!sFlag) { var imageUrlSmall = "assets/images/PhotoNotAvailableSmall.jpg"; }
+                        if (!lFlag) { var imageUrlLarge = "assets/images/PhotoNotAvailableLarge.jpg"; }
                     }
                     else {
-                        var imageUrlSmall = "";
-                        var imageUrlLarge = "";
+                        var imageUrlSmall = "assets/images/PhotoNotAvailableSmall.jpg";
+                        var imageUrlLarge = "assets/images/PhotoNotAvailableLarge.jpg";
                     }
                 }
 
                 var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge);
-                var imageUrlSmallTag = $("<img>");
-                imageUrlSmallTag.attr("src", imageUrlSmall)
-                displayResults.append(imageUrlSmallTag);
-                var idTag = $("<span>");
-                idTag.html(id + "<br>");
-                displayResults.append(idTag);
-                var nameTag = $("<h5>");
-
-                nameTag.html("<a href='#' >" + name + "</a>");
-                displayResults.append(nameTag);
+             
 
                 tmEventList.push(tmEventSingle);
             }
-        },  //end of success callback
-        error: function () {
-            console.log("Something is wrong in ajax call: error");
-            return false;
-        }
     });
     console.log(tmEventList);
+    console.log(tmEventList.length);
+    console.log(tmEventList['0']);
     return tmEventList;
 
 }
-
+// we need to work on this add some css
 function displaySearchResult(tmEventList) {
+    if(tmEventList.length===0){return false;}
     var displayResults = $("#displayResults");
-    var test = $("<p>");
-    test.html(keyword);
-    displayResults.append(test);
+    var tableTag=$("<table>");
+    var tableHeaderTag=$("<tr><th>Image</th><th>Event Name</th><th>Date</th>");
+    tableTag.append(tableHeaderTag);
+    for(var i=0;i<tmEventList.length;i++){
+        var tableRowTag=$("<tr>");
+        var tableImageCell=$("<td>");
+        var aTag=$("<a>");
+        aTag.attr("id",tmEventList[i].id);
+        aTag.addClass("idQueryString");
+        aTag.attr("href","event.html?id="+tmEventList[i].id);
+        var imageTag=$("<img>");
+        imageTag.attr("src",tmEventList[i].imageUrlSmall);
+        aTag.append(imageTag);
+        tableImageCell.append(aTag);
+       tableRowTag.append(tableImageCell);
+        var tableNameCell=$("<td>");
+        tableNameCell.html("<h4>"+tmEventList[i].name+"</h4>");
+        tableRowTag.append(tableNameCell);
+        var tableDateCell=$("<td>");
+        tableDateCell.html("<h4>"+tmEventList[i].startlocalDate+"</h4>");
+        tableRowTag.append(tableDateCell);
+        tableTag.append(tableRowTag);
+    }
+    displayResults.append(tableTag);
+}
+function retrieveData(){
+ console.log("we are in retrieve data!");
+ var queryStringId=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+ var queryId=queryStringId[0].substring(3,queryStringId[0].length);
+ console.log(queryId);
+ var tmEventListObject=localStorage.getItem("tmEventListString");
+ var tmEventList=JSON.parse(tmEventListObject);
+ console.log(tmEventList);
+ var index=0;
+for(var i=0;i<tmEventList.length;i++){
+    var objSingle=tmEventList[i];
+    if(objSingle.id===queryId){
+        index=i;
+        break;
+    }
+}
+console.log(tmEventList[index]);
+displayEventDetails(tmEventList[index]);
 }
 
+function displayEventDetails(tmEvent) {
+    var imageHolder = $("#images");
+    var aTag = $("<a>");
+    aTag.attr("id", tmEvent.id);
+
+    aTag.attr("href", tmEvent.url);
+    var imgTag = $("<img>");
+    imgTag.attr("src", tmEvent.imageUrlLarge);
+    aTag.append(imgTag);
+    imageHolder.append(aTag);
+    var listULholder=$("#listHolder")
+    var eventName=$("<li>")
+    eventName.text(tmEvent.name);
+    listULholder.append(eventName);
+    var eventLocation=$("<li>")
+    eventLocation.html(tmEvent.venuesAddress+"<span> | </span>"+tmEvent.venuesCity+"<span> | </span>"+tmEvent.venuesState);
+    listULholder.append(eventLocation);
+    var eventDate=$("<li>")
+    eventDate.text(tmEvent.startlocalDate);
+    listULholder.append(eventDate);
+    var eventPrice=$("<li>")
+    eventPrice.html(tmEvent.currencyPrice+" " + tmEvent.minPrice+"<span> -- </span>"+tmEvent.maxPrice);
+    listULholder.append(eventPrice);
+}
 
 $("#btnSubmit").on("click", function (event) {
     event.preventDefault();
@@ -215,7 +273,7 @@ $("#btnSubmit").on("click", function (event) {
     var startDate = $("#startDate").val().trim();
     var endDate = $("#endDate").val().trim();
     var location = $("#location").val().trim();
-    if(localStorage.getItem("windowLatitude")!==null || localStorage.getItem("")!==null){
+    if(localStorage.getItem("windowLatitude")!==null || localStorage.getItem("windowLongitude")!==null){
         var currentLatitude=localStorage.getItem("windowLatitude");
         var currentLongitude=localStorage.getItem("windowLongitude");
     }
@@ -225,6 +283,16 @@ $("#btnSubmit").on("click", function (event) {
     }
     var myUserInput = new userInput(keyword, startDate, endDate, location, currentLatitude, currentLongitude);
     var mytmEventList = tmEventSearch(myUserInput);
+    if(localStorage.getItem("tmEventListString")===null){
+        var mytmEventListString=JSON.stringify(mytmEventList);
+        localStorage.setItem("tmEventListString",mytmEventListString);
+    }
+    else{
+        localStorage.removeItem("tmEventListString");
+        var mytmEventListString=JSON.stringify(mytmEventList);
+        localStorage.setItem("tmEventListString",mytmEventListString);
+    }
+    displaySearchResult(mytmEventList);
 
 });
 $("#btnReset").on("click", function (event) {
@@ -234,6 +302,7 @@ $("#btnReset").on("click", function (event) {
     $("#startDate").val("");
     $("#endDate").val("");
     $("#location").val("");
+    localStorage.removeItem("tmEventListString");
 })
 
 getUserCoords();
