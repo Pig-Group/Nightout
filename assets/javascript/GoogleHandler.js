@@ -8,12 +8,11 @@ var type = [];
 var lat = 33.669444;
 var lng = -117.823056;
 var eventName = "PlaceHolder";
-var places = [];
 function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('eventMap'), {
         center: local,
-        zoom: 15
+        zoom: 12
     });
     infowindow = new google.maps.InfoWindow();
     service = new google.maps.places.PlacesService(map);
@@ -36,7 +35,6 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            places.push({ placeId: results[i].place_id,name:results[i].name });
         }
     }
 }
@@ -53,16 +51,18 @@ function createMarker(place) {
 }
 function label(place) {
     if (place.price_level == undefined && place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name);
+        infowindow.setContent("<strong>Name:</strong> " + place.name + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
     else if (place.price_level == undefined) {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString() + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
+
     }
     else if (place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name + " Price Range " + place.price_level.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Price Range:</strong> " + place.price_level.toString() + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
+
     else {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString() + " Price Range " + place.price_level);
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString() + "<br><strong>Price Range:</strong> " + place.price_level + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
 }
 $("#lodging").on('click', function () {

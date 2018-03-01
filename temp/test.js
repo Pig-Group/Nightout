@@ -8,7 +8,7 @@ var type = [];
 var lat = 33.669444;
 var lng = -117.823056;
 var eventName = "PlaceHolder";
-var places = [];
+//var places = [];
 function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
@@ -36,7 +36,7 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            places.push({ placeId: results[i].place_id,name:results[i].name });
+            //places.push({ placeId: results[i].place_id,name:results[i].name });
         }
     }
 }
