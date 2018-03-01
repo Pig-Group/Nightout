@@ -25,7 +25,6 @@ var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime
     this.imageUrlLarge = imageUrlLarge;
     this.venuesLatitude=venuesLatitude;
     this.venuesLongitude=venuesLongitude;
-    
 }
 
 var userInput = function (keyword, startDate, endDate, location, latitude, longitude) {
@@ -99,10 +98,8 @@ function tmEventSearch(userInput) {
     if (userInput.keyword !== '' && userInput.keyword != null) {
         queryParameters += "&keyword=" + userInput.keyword;
     }
-    console.log(windowLatitude);
+    //console.log(windowLatitude);
     console.log(userInput.geoPoint());
-
-
     if (userInput.startDate !== '' && userInput.startDate != null) {
         var myDate = new Date(userInput.startDate);
         var newStartDate = myDate.toISOString().split('.')[0] + "Z";
@@ -168,6 +165,8 @@ function tmEventSearch(userInput) {
             else {
                 var genreName = "Unknown";
             }
+            //var eventLat=response._embedded.events[i]._embedded.venues[0].location.latitude;
+            //var eventLong=response._embedded.events[i]._embedded.venues[0].location.longitude;
             var startlocalDate = response._embedded.events[i].dates.start.localDate;
             var startlocalTime = response._embedded.events[i].dates.start.localTime;
             var distance = response._embedded.events[i].distance;
@@ -253,6 +252,9 @@ function displaySearchResult(tmEventList) {
         aTag.attr("id", tmEventList[i].id);
         aTag.addClass("idQueryString");
         aTag.attr("href", "event.html?id=" + tmEventList[i].id);
+        // aTag.attr("lat",tmEventList[i].venuesLatitude);
+        // aTag.attr("long",tmEventList[i].venuesLongitude);
+        //localStorage.setItem(tmEventList[i].id,tmEventList[i].venuesLatitude+" "+tmEventList[i].venuesLongitude);
         var imageTag = $("<img>");
         imageTag.attr("src", tmEventList[i].imageUrlSmall);
         aTag.append(imageTag);
@@ -388,5 +390,9 @@ $("#btnReset").on("click", function (event) {
     localStorage.removeItem("tmEventListString");
     window.location.href="main.html";
 })
+// $(document).on("click",".idQueryString",function(){
+//     localStorage.setItem("eventLat",this.attr("lat"));
+//     localStorage.setItem("eventLong",this.attr("long"));
+// })
 
 getUserCoords();
