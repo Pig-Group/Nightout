@@ -338,7 +338,7 @@ $(document).ready(function () {
     if (fileName === "event.html") {
         retrieveData4EventDetailsPage();
     }
-    if (fileName === "main.html") {
+    if (fileName === "index.html") {
         retrieveSearchResults4HomePage();
     }
 });
@@ -350,7 +350,7 @@ function buyTicket(){
 };
 $("#btnBackSearch").on("click", function (event) {
     event.preventDefault();
-    window.location.href = "main.html?reload=true";
+    window.location.href = "index.html?reload=true";
 });
 $("#btnSubmit").on("click", function (event) {
     event.preventDefault();
@@ -388,7 +388,7 @@ $("#btnReset").on("click", function (event) {
     $("#endDate").val("");
     $("#location").val("");
     localStorage.removeItem("tmEventListString");
-    window.location.href="main.html";
+    window.location.href="index.html";
 })
 // $(document).on("click",".idQueryString",function(){
 //     localStorage.setItem("eventLat",this.attr("lat"));
