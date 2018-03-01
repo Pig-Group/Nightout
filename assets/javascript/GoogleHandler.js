@@ -1,19 +1,36 @@
 
 //Extensive code taken from the google places documentation examples
-
 var map;
 var infowindow;
 var service;
-var type = [];
+var type = ["restaurant"];
 var lat = 33.669444;
 var lng = -117.823056;
-var eventName = "PlaceHolder";
-//var places = [];
+var eventName = "Event";
+function setValues(){
+    var temp=localStorage.getItem("tmEventListString");
+    var inputs=JSON.parse(temp);
+    var eventID=window.location.href.substring(window.location.href.indexOf("=")+1);
+    console.log(eventID);
+    for(i=0;i<inputs.length;i++)
+    {
+        var instance=inputs[i];
+        if(instance.id==eventID)
+        {
+            console.log("confirm");
+            lat=parseFloat(instance.venuesLatitude);
+            lng=parseFloat(instance.venuesLongitude);
+            console.log(lat);
+            console.log(lng);
+        }
+    }
+}
+setValues();
 function initMap() {
     var local = { lat, lng };
-    map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('eventMap'), {
         center: local,
-        zoom: 12,
+        zoom: 12
     });
     infowindow = new google.maps.InfoWindow();
     service = new google.maps.places.PlacesService(map);
@@ -36,7 +53,6 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            //places.push({ placeId: results[i].place_id,name:results[i].name });
         }
     }
 }

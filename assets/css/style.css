@@ -16,11 +16,7 @@
     margin-top: 20px;
  }
  
- .displayResults{
-    margin-top: 50px;
  
-    color: black;
- }
  
  .pure-form {
     display: inline-block;
@@ -154,7 +150,6 @@
     width: 80%;
     height: 300px;
     margin-top: 70px;
-    background: black;
  
  }
  
@@ -167,7 +162,6 @@
     margin-top: 50px;
     width: 80%;
     height: 300px;
-    background: black;
  }
  
  #backBtn {
