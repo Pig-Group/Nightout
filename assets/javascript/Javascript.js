@@ -233,9 +233,6 @@ function tmEventSearch(userInput) {
             tmEventList.push(tmEventSingle);
         }
     }); //end of .done ajax
-  //  console.log(tmEventList);
-  //  console.log(tmEventList.length);
-  //  console.log(tmEventList['0']);
     return tmEventList;
 
 }
@@ -244,6 +241,7 @@ function displaySearchResult(tmEventList) {
     if (tmEventList.length === 0) { return false; }
     var displayResults = $("#displayResults");
     var tableTag = $("<table>");
+    tableTag.addClass("pure-table");
     var tableHeaderTag = $("<tr><th>Image</th><th>Event Name</th><th>Date</th>");
     tableTag.append(tableHeaderTag);
     for (var i = 0; i < tmEventList.length; i++) {
@@ -259,10 +257,14 @@ function displaySearchResult(tmEventList) {
         tableImageCell.append(aTag);
         tableRowTag.append(tableImageCell);
         var tableNameCell = $("<td>");
-        tableNameCell.html("<h4>" + tmEventList[i].name + "</h4>");
-        tableRowTag.append(tableNameCell);
+        var aTag2 = $("<a>");
+        aTag2.addClass("idQueryString");
+        aTag2.attr("href", "event.html?id=" + tmEventList[i].id);
+        tableNameCell.html("<h5>" + tmEventList[i].name + "</h5>");
+        aTag2.append(tableNameCell);
+        tableRowTag.append(aTag2);
         var tableDateCell = $("<td>");
-        tableDateCell.html("<h4>" + tmEventList[i].startlocalDate + "</h4>");
+        tableDateCell.html("<h5>" + tmEventList[i].startlocalDate + "</h5>");
         tableRowTag.append(tableDateCell);
         tableTag.append(tableRowTag);
     }

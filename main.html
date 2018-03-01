@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
 </head>
 
 <body>
@@ -33,39 +33,40 @@
         </div>
     </div>
 
-
-        <form class="pure-form pure-form-stacked">
-
-            <label for="keyword">
-                <h4>Event Name</h4>
-            </label>
-            <input id="keyword" type="text" placeholder="Name of Event (Keyword)">
-
-            <table>
-                <td>
-                    <h4>Start Date</h4>
-                    <input id="startDate" type="date" name="startdate" placeholder="Start Date">
-                </td>
-                <td>
-                    <h4>End Date</h4>
-                    <input id="endDate" type="date" name="enddate" placeholder="End Date">
-                </td>
-            </table>
-
-            <label for="city">
-                <h4>Location</h4>
-            </label>
-            <input id="location" type="text" placeholder="City or Zip Code">
-
-            <button type="submit" class="pure-button pure-button-primary" id="btnSubmit">Search</button>
-            <button type="reset" class="pure-button pure-button-primary" id="btnReset">Reset</button>
-
-        </form>
    
-    <div id="displayResults">
-        
-    </div>
+    <form class="pure-form pure-form-stacked">
 
+        <label for="keyword">
+            <h4>Event Name</h4>
+        </label>
+        <input id="keyword" type="text" placeholder="Name of Event (Keyword)">
+
+        <table>
+            <td>
+                <h4>Start Date</h4>
+                <input id="startDate" type="date" name="startdate" placeholder="Start Date">
+            </td>
+            <td>
+                <h4>End Date</h4>
+                <input id="endDate" type="date" name="enddate" placeholder="End Date">
+            </td>
+        </table>
+
+        <label for="city">
+            <h4>Location</h4>
+        </label>
+        <input id="location" type="text" placeholder="City or Zip Code">
+
+        <button type="submit" class="pure-button pure-button-primary" id="btnSubmit">Search</button>
+        <button type="reset" class="pure-button pure-button-primary" id="btnReset">Reset</button>
+
+    </form>
+
+   
+        <div id="displayResults" class="displayResultsContainer">
+
+        </div>
+       
     <footer>
         &copy; Copyright TEAM PIG
     </footer>
