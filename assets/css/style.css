@@ -16,7 +16,10 @@
     margin-top: 20px;
  }
  
- 
+ .displayResultsContainer{
+     text-align: center;
+     margin-left: 27%;
+ }
  
  .pure-form {
     display: inline-block;
@@ -190,13 +193,13 @@
         .home-menu ul {
             float: right;
         }
- 
+    }
  /*
  * -- DESKTOP (AND UP) MEDIA QUERIES --
  * On desktops and other large devices, we want to over-ride some
  * of the mobile and tablet styles.
  */
- @media (min-width: 78em) {
+ @media (min-width: 48em) {
     /* We increase the header font size even more */
     .splash-head {
         font-size: 300%;
