@@ -73,12 +73,21 @@ var getUserCoords = function () {
         }
     }
 }
-function isCity(location){
-    var zipCode= new RegExp("^\d{5}?$");
-    var cityText=new RegExp("[^a-z|^A-Z]");
-    if(zipCode.test(location)){return true;}
-    else if(cityText.test(location)){return false;}
-    else{ return null;}
+// this function using regular expression: city rturns TRUE
+function isCity(location) {
+    location = location.trim();
+    var zipORCityText = new RegExp("^([0-9]{5}|[a-zA-Z][a-zA-Z ]{0,49})$");
+    if (zipORCityText.test(location)) {
+        if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(location)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return null;
+    }
 }
 function tmEventSearch(userInput) {
     var tmEventList = [];
@@ -89,9 +98,7 @@ function tmEventSearch(userInput) {
     }
     console.log(windowLatitude);
     console.log(userInput.geoPoint());
-    if (userInput.geoPoint !== '' && userInput.geoPoint != null) {
-        queryParameters += "&geoPoint=" + userInput.geoPoint();
-    }
+
 
     if (userInput.startDate !== '' && userInput.startDate != null) {
         var myDate = new Date(userInput.startDate);
@@ -104,11 +111,21 @@ function tmEventSearch(userInput) {
         queryParameters += "&endDateTime=" + newEndtDate;
     }
     if (userInput.location !== '' && userInput.location != null) {
-        if(!isCity(userInput.location)){
-        queryParameters += "&city=" + userInput.location;
+        if (isCity(userInput.location)) {
+            queryParameters += "&city=" + userInput.location;
         }
-        else if(!isCity(userInput.location)){
-            queryParameters+="&postalCode="+userInput.location;
+        else if (!isCity(userInput.location) && isCity(userInput.location) != null) {
+            queryParameters += "&postalCode=" + userInput.location;
+        }
+        else {
+            if (userInput.geoPoint !== '' && userInput.geoPoint != null) {
+                queryParameters += "&geoPoint=" + userInput.geoPoint();
+            }
+        }
+    }
+    else {
+        if (userInput.geoPoint !== '' && userInput.geoPoint != null) {
+            queryParameters += "&geoPoint=" + userInput.geoPoint();
         }
     }
     var queryUrl = rootUrl + queryParameters;
@@ -128,14 +145,21 @@ function tmEventSearch(userInput) {
             displayResults.html(test);
             return false;
         }
+      //  console.log(response);
         console.log("Number of events in your search is: " + countEvents);
         for (var i = 0; i < response._embedded.events.length; i++) {
+          //  console.log(response._embedded.events[i]);
             var id = response._embedded.events[i].id;
             var name = response._embedded.events[i].name;
             var url = response._embedded.events[i].url;
             if (response._embedded.events[i].hasOwnProperty("classifications")) {
                 if (response._embedded.events[i].classifications.length > 0) {
-                    var genreName = response._embedded.events[i].classifications[0].genre.name;
+                    if (response._embedded.events[i].classifications[0].hasOwnProperty("genre")) {
+                        var genreName = response._embedded.events[i].classifications[0].genre.name;
+                    }
+                    else {
+                        var genreName = "Unknown";
+                    }
                 }
             }
             else {
@@ -160,7 +184,12 @@ function tmEventSearch(userInput) {
                 if (response._embedded.events[i]._embedded.venues.length > 0) {
                     var venuesAddress = response._embedded.events[i]._embedded.venues[0].address.line1;
                     var venuesCity = response._embedded.events[i]._embedded.venues[0].city.name;
-                    var venuesState = response._embedded.events[i]._embedded.venues[0].state.name;
+                    if (response._embedded.events[i]._embedded.venues[0].hasOwnProperty("state")) {
+                        var venuesState = response._embedded.events[i]._embedded.venues[0].state.name;
+                    }
+                    else{
+                        var venuesState = "TBA";     
+                    }
                 }
             }
             else {
@@ -198,14 +227,14 @@ function tmEventSearch(userInput) {
 
             tmEventList.push(tmEventSingle);
         }
-    });
-    console.log(tmEventList);
-    console.log(tmEventList.length);
-    console.log(tmEventList['0']);
+    }); //end of .done ajax
+  //  console.log(tmEventList);
+  //  console.log(tmEventList.length);
+  //  console.log(tmEventList['0']);
     return tmEventList;
 
 }
-// we need to work on this add some css
+// we need to work on this to add some css
 function displaySearchResult(tmEventList) {
     if (tmEventList.length === 0) { return false; }
     var displayResults = $("#displayResults");
@@ -278,29 +307,29 @@ function displayEventDetails(tmEvent) {
     eventPrice.html(tmEvent.currencyPrice + " " + tmEvent.minPrice + "<span> -- </span>" + tmEvent.maxPrice);
     listULholder.append(eventPrice);
 }
-function retrieveSearchResults4HomePage(){
+function retrieveSearchResults4HomePage() {
     var queryStringId = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     var queryId = queryStringId[0].substring(7, queryStringId[0].length);
-    if(queryId==="true"){
-    console.log("reload="+queryId);
-     var tmEventListObject = localStorage.getItem("tmEventListString");
-    var mytmEventList = JSON.parse(tmEventListObject);
-    displaySearchResult(mytmEventList);
+    if (queryId === "true") {
+        console.log("reload=" + queryId);
+        var tmEventListObject = localStorage.getItem("tmEventListString");
+        var mytmEventList = JSON.parse(tmEventListObject);
+        displaySearchResult(mytmEventList);
     }
 }
-$(document).ready(function(){
-    var url=top.location.pathname;
-    var fileName=url.substring(url.lastIndexOf("/")+1);
-    if(fileName==="event.html"){
-       retrieveData4EventDetailsPage();
+$(document).ready(function () {
+    var url = top.location.pathname;
+    var fileName = url.substring(url.lastIndexOf("/") + 1);
+    if (fileName === "event.html") {
+        retrieveData4EventDetailsPage();
     }
-    if(fileName==="main.html"){
+    if (fileName === "main.html") {
         retrieveSearchResults4HomePage();
     }
 });
-$("#btnBackSearch").on("click",function(event){
+$("#btnBackSearch").on("click", function (event) {
     event.preventDefault();
-    window.location.href="main.html?reload=true";
+    window.location.href = "main.html?reload=true";
 });
 $("#btnSubmit").on("click", function (event) {
     event.preventDefault();
@@ -338,6 +367,7 @@ $("#btnReset").on("click", function (event) {
     $("#endDate").val("");
     $("#location").val("");
     localStorage.removeItem("tmEventListString");
+    window.location.href="main.html";
 })
 
 getUserCoords();
