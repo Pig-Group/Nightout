@@ -7,7 +7,7 @@ var windowLatitude = "";
 var windowLongitude = "";
 
 //tmEvent
-var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge) {
+var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge,venuesLatitude,venuesLongitude) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -23,6 +23,9 @@ var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime
     this.venuesState = venuesState;
     this.imageUrlSmall = imageUrlSmall;
     this.imageUrlLarge = imageUrlLarge;
+    this.venuesLatitude=venuesLatitude;
+    this.venuesLongitude=venuesLongitude;
+    
 }
 
 var userInput = function (keyword, startDate, endDate, location, latitude, longitude) {
@@ -145,7 +148,7 @@ function tmEventSearch(userInput) {
             displayResults.html(test);
             return false;
         }
-      //  console.log(response);
+        console.log(response);
         console.log("Number of events in your search is: " + countEvents);
         for (var i = 0; i < response._embedded.events.length; i++) {
           //  console.log(response._embedded.events[i]);
@@ -182,6 +185,8 @@ function tmEventSearch(userInput) {
             }
             if (response._embedded.events[i]._embedded.hasOwnProperty("venues")) {
                 if (response._embedded.events[i]._embedded.venues.length > 0) {
+                    var venuesLongitude=response._embedded.events[i]._embedded.venues[0].location.longitude;
+                    var venuesLatitude=response._embedded.events[i]._embedded.venues[0].location.latitude;
                     var venuesAddress = response._embedded.events[i]._embedded.venues[0].address.line1;
                     var venuesCity = response._embedded.events[i]._embedded.venues[0].city.name;
                     if (response._embedded.events[i]._embedded.venues[0].hasOwnProperty("state")) {
@@ -222,7 +227,7 @@ function tmEventSearch(userInput) {
                 }
             }
 
-            var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge);
+            var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge,venuesLatitude,venuesLongitude);
 
 
             tmEventList.push(tmEventSingle);
@@ -287,25 +292,33 @@ function displayEventDetails(tmEvent) {
     var imageHolder = $("#images");
     var aTag = $("<a>");
     aTag.attr("id", tmEvent.id);
-
+    aTag.attr("target","_blank");
     aTag.attr("href", tmEvent.url);
     var imgTag = $("<img>");
     imgTag.attr("src", tmEvent.imageUrlLarge);
     aTag.append(imgTag);
     imageHolder.append(aTag);
     var listULholder = $("#listHolder")
-    var eventName = $("<li>")
+    var eventName = $("<h4>")
     eventName.text(tmEvent.name);
     listULholder.append(eventName);
-    var eventLocation = $("<li>")
-    eventLocation.html(tmEvent.venuesAddress + "<span> | </span>" + tmEvent.venuesCity + "<span> | </span>" + tmEvent.venuesState);
+    var eventLocation = $("<h4>")
+    eventLocation.html("Address: "+tmEvent.venuesAddress + "<span> | </span>" + tmEvent.venuesCity + "<span> | </span>" + tmEvent.venuesState);
     listULholder.append(eventLocation);
-    var eventDate = $("<li>")
-    eventDate.text(tmEvent.startlocalDate);
+    var eventDate = $("<h4>")
+    eventDate.text("Date: "+tmEvent.startlocalDate);
     listULholder.append(eventDate);
-    var eventPrice = $("<li>")
-    eventPrice.html(tmEvent.currencyPrice + " " + tmEvent.minPrice + "<span> -- </span>" + tmEvent.maxPrice);
+    var eventPrice = $("<h4>")
+    eventPrice.html("Price: "+tmEvent.currencyPrice + " $" + tmEvent.minPrice + "<span> -- </span>" + tmEvent.maxPrice);
     listULholder.append(eventPrice);
+    var purchaseTicket=$("#backButton");
+    var btnPurchaseTicket=$("<button>");
+    btnPurchaseTicket.attr("id","btnPurchase");
+    btnPurchaseTicket.attr("data-url",tmEvent.url);
+    btnPurchaseTicket.text("Purchase");
+    btnPurchaseTicket.attr("type","submit");
+    btnPurchaseTicket.addClass("pure-button pure-button-primary");
+    purchaseTicket.append(btnPurchaseTicket);
 }
 function retrieveSearchResults4HomePage() {
     var queryStringId = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -327,6 +340,12 @@ $(document).ready(function () {
         retrieveSearchResults4HomePage();
     }
 });
+$(document).on("click","#btnPurchase",buyTicket);
+function buyTicket(){
+    var url=$(this).attr("data-url");
+    window.open(url,"_blank");
+    console.log($(this).attr("data-url"));
+};
 $("#btnBackSearch").on("click", function (event) {
     event.preventDefault();
     window.location.href = "main.html?reload=true";
