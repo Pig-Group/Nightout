@@ -7,7 +7,7 @@ var windowLatitude = "";
 var windowLongitude = "";
 
 //tmEvent
-var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge) {
+var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge, eventLat, eventLong) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -23,6 +23,8 @@ var tmEvent = function (id, name, url, genreName, startlocalDate, startlocalTime
     this.venuesState = venuesState;
     this.imageUrlSmall = imageUrlSmall;
     this.imageUrlLarge = imageUrlLarge;
+    this.eventLat=eventLat;
+    this.eventLong=eventLong;
 }
 
 var userInput = function (keyword, startDate, endDate, location, latitude, longitude) {
@@ -165,6 +167,8 @@ function tmEventSearch(userInput) {
             else {
                 var genreName = "Unknown";
             }
+            var eventLat=response._embedded.events[i]._embedded.venues[0].location.latitude;
+            var eventLong=response._embedded.events[i]._embedded.venues[0].location.longitude;
             var startlocalDate = response._embedded.events[i].dates.start.localDate;
             var startlocalTime = response._embedded.events[i].dates.start.localTime;
             var distance = response._embedded.events[i].distance;
@@ -222,7 +226,7 @@ function tmEventSearch(userInput) {
                 }
             }
 
-            var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge);
+            var tmEventSingle = new tmEvent(id, name, url, genreName, startlocalDate, startlocalTime, distance, maxPrice, minPrice, currencyPrice, venuesAddress, venuesCity, venuesState, imageUrlSmall, imageUrlLarge, eventLat, eventLong);
 
 
             tmEventList.push(tmEventSingle);
@@ -248,6 +252,8 @@ function displaySearchResult(tmEventList) {
         aTag.attr("id", tmEventList[i].id);
         aTag.addClass("idQueryString");
         aTag.attr("href", "event.html?id=" + tmEventList[i].id);
+        aTag.attr("lat",tmEventList[i].eventLat.toString());
+        aTag.attr("long",tmEventList[i].eventLong.toString());
         var imageTag = $("<img>");
         imageTag.attr("src", tmEventList[i].imageUrlSmall);
         aTag.append(imageTag);
@@ -368,6 +374,10 @@ $("#btnReset").on("click", function (event) {
     $("#location").val("");
     localStorage.removeItem("tmEventListString");
     window.location.href="main.html";
+})
+$(document).on("click",".idQueryString",function(){
+    localStorage.setItem("eventLat",this.attr("lat"));
+    localStorage.setItem("eventLong",this.attr("long"));
 })
 
 getUserCoords();
