@@ -13,7 +13,7 @@ function initMap() {
     var local = { lat, lng };
     map = new google.maps.Map(document.getElementById('map'), {
         center: local,
-        zoom: 15
+        zoom: 12,
     });
     infowindow = new google.maps.InfoWindow();
     service = new google.maps.places.PlacesService(map);
@@ -53,16 +53,18 @@ function createMarker(place) {
 }
 function label(place) {
     if (place.price_level == undefined && place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name);
+        infowindow.setContent("<strong>Name:</strong> " + place.name + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
     else if (place.price_level == undefined) {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString() + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
+
     }
     else if (place.rating == undefined) {
-        infowindow.setContent("Name: " + place.name + " Price Range " + place.price_level.toString());
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Price Range:</strong> " + place.price_level.toString() + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
+
     else {
-        infowindow.setContent("Name: " + place.name + " Rating: " + place.rating.toString() + " Price Range " + place.price_level);
+        infowindow.setContent("<strong>Name:</strong> " + place.name + "<br><strong>Rating:</strong> " + place.rating.toString() + "<br><strong>Price Range:</strong> " + place.price_level + '<br><a href="https://www.google.com/maps/place/' + place.geometry.location +'">Directions</a>');
     }
 }
 $("#lodging").on('click', function () {
