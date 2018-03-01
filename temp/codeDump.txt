@@ -1,0 +1,62 @@
+// for(i=0;i<places.length;i++)
+    // {
+    //     // service.getDetails(places[i], function (details, status) {
+    //     //     var result = $("<div>");
+    //     //     var label = $("<p>");
+    //     //     console.log(details.name);
+    //     //     console.log(details.formatted_address);
+    //     //     console.log(details.rating);
+    //     //     console.log(details.openingHours.periods[0])
+    //     //     //label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
+    //     //     result.append(label);
+    //     //     $("#display").append(result);
+    //     // });
+    //     console.log(places[i]);
+    // }
+    // places.length=0;
+
+    // places.push(place);
+    // var request = { reference: place.reference };
+    // service.getDetails(request, function (details, status) {
+    //     // google.maps.event.addListener(marker, 'click', function () {
+    //     //     label(details);
+    //     //     //infowindow.setContent(details.name + "<br />" + details.formatted_address + "<br />" + details.website + "<br />" + details.rating + "<br />" + details.formatted_phone_number);
+    //     //     infowindow.open(map, this);
+    //     // });
+    //     // var result = $("<div>");
+    //     // var label = $("<p>");
+    //     // label.text(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
+    //     // result.append(label);
+    //     // $("#display").append(result);
+    // });
+
+// if (status === google.maps.places.PlacesServiceStatus.OK) {
+//     for (var i = 0; i < results.length; i++) {
+//         var placeLoc = results[i].geometry.location;
+//         var marker = new google.maps.Marker({
+//             map: map,
+//             position: placeLoc,
+//             place: {
+//                 placeId: results[i].place_id,
+//                 location: placeLoc
+//             }
+//         });
+//         google.maps.event.addListener(marker, 'click', function () {
+//             label(results[i]);
+//             infowindow.open(map, this);
+//         });
+//     }
+// }
+
+//console.log(place.formatted_address);
+    // service.getDetails(place, function (details, status) {
+    //     var result = $("<div>");
+    //     var label = $("<p>");
+    //     console.log(details.name);
+    //     console.log(details.formatted_address);
+    //     console.log(details.rating);
+    //     console.log(details.openingHours.periods)
+    //     label.html(details.name + " " + details.formatted_address + " " + details.rating + " " + details.openingHours.periods);
+    //     result.append(label);
+    //     $("#display").append(result);
+    // });
