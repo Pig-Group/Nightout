@@ -11,17 +11,13 @@ function setValues(){
     var temp=localStorage.getItem("tmEventListString");
     var inputs=JSON.parse(temp);
     var eventID=window.location.href.substring(window.location.href.indexOf("=")+1);
-    console.log(eventID);
     for(i=0;i<inputs.length;i++)
     {
         var instance=inputs[i];
         if(instance.id==eventID)
         {
-            console.log("confirm");
             lat=parseFloat(instance.venuesLatitude);
             lng=parseFloat(instance.venuesLongitude);
-            console.log(lat);
-            console.log(lng);
         }
     }
 }
