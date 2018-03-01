@@ -16,6 +16,11 @@
     margin-top: 20px;
  }
  
+ p{
+    margin-top: 50px;
+    display: inline-block;
+ }
+
  .displayResultsContainer{
      text-align: center;
      margin-left: 27%;
