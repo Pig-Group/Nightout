@@ -15,10 +15,32 @@
     text-align: center;
     margin-top: 20px;
  }
+
+#logo{
+ width: 25px;
+ margin-left: 25px;
+ margin-top: 7px;
+} 
+
+#content{
+     margin-right: 150px;
+ }
+
+ #backButton {
+     margin-right: 15px;
+ }
  
+ p{
+    margin-top: 50px;
+    display: inline-block;
+ }
+
  .displayResultsContainer{
      text-align: center;
-     margin-left: 27%;
+     margin-left: 30%;
+     margin-right: 30%;
+     margin-top: 5%;
+     margin-bottom: 5%;
  }
  
  .pure-form {
@@ -27,7 +49,8 @@
  }
  
  h1,h2,h3,h4,h5,h6,label {
-    color: #34495e;
+     text-align: center;
+    color: #885EAD;
  }
  
  
@@ -41,11 +64,44 @@
     margin-left: 20px;
  }
  
- footer {
-    text-align: center;
-    
+ #coverpg {
+    background             : url("../images/nightout.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size   : cover;
+    -o-background-size     : cover;
+    background-size        : cover;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size  : 20px;
+    text-align : center;
     color: white;
-    background:#2d3e50;
+    width  : 100%;
+    margin : 0;
+    padding: 0;
+    justify-content: center;
+    
+}
+
+.title h1 {
+    font-size: 80px;
+}
+
+#getStart{
+    margin-top: 180px;
+    background: #885EAD;
+}
+
+.coverPage {
+    background: rgba(255, 255, 255, 0);
+    min-height    : 100%;
+    min-height    : 100vh;  
+    display       : flex;
+    flex-direction: column;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    background:#885EAD;
     margin-top: 50px;
     padding: 20px;
     position: absolute;
@@ -85,7 +141,7 @@
  
  a.pure-button-primary {
     background: white;
-    color: #2d3e50;
+    color: #885EAD;
     border-radius: 5px;
     font-size: 110%;
  }
@@ -97,12 +153,13 @@
  }
  
  .pure-button {
-    background: rgb(37, 70, 79);
+    background: rgb(136, 94, 173);
     margin-top: 30px;
   
  }
- #button1 {
-    width: 100px;
+ 
+ #btnSubmit, #btnReset {
+     margin: 5px;
  }
  
  
@@ -115,7 +172,7 @@
     padding: 0.5em;
     text-align: center;
     box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
-    background: #2d3e50;
+    background: #885EAD;
  
  }
  
@@ -202,6 +259,6 @@
  @media (min-width: 48em) {
     /* We increase the header font size even more */
     .splash-head {
-        font-size: 300%;
+        font-size: 200%;
     }
  }

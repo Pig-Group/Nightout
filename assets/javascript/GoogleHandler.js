@@ -11,17 +11,14 @@ function setValues(){
     var temp=localStorage.getItem("tmEventListString");
     var inputs=JSON.parse(temp);
     var eventID=window.location.href.substring(window.location.href.indexOf("=")+1);
-    console.log(eventID);
     for(i=0;i<inputs.length;i++)
     {
         var instance=inputs[i];
         if(instance.id==eventID)
         {
-            console.log("confirm");
+            eventName=instance.name;
             lat=parseFloat(instance.venuesLatitude);
             lng=parseFloat(instance.venuesLongitude);
-            console.log(lat);
-            console.log(lng);
         }
     }
 }
@@ -37,7 +34,8 @@ function initMap() {
     var initialPosition = new google.maps.Marker({
         position: local,
         map: map,
-        title: eventName
+        title: eventName,
+        label:"!"
     });
     google.maps.event.addListener(initialPosition, 'click', function () {
         infowindow.setContent(eventName);
