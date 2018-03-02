@@ -1,6 +1,5 @@
 /* Global variables, CONST, and objects */
 const TM_KEY = "Lpdy3vX87eDAFfSO7RcgKAaQZzL4rsRK";
-const GOOGLE_KEY = "AIzaSyDHxneOmC7wPyuap2-wMrNaTi9_i3o4Abo";
 const TM_SIZE = 25;
 const TM_RADIUS = 53; // miles
 var windowLatitude = "";
