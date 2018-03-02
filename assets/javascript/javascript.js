@@ -255,11 +255,11 @@ function displaySearchResult(tmEventList) {
         // aTag.attr("long",tmEventList[i].venuesLongitude);
         //localStorage.setItem(tmEventList[i].id,tmEventList[i].venuesLatitude+" "+tmEventList[i].venuesLongitude);
        
-        /*var imageTag = $("<img>");
+        var imageTag = $("<img>");
         imageTag.attr("src", tmEventList[i].imageUrlSmall);
         aTag.append(imageTag);
         tableImageCell.append(aTag);
-        tableRowTag.append(tableImageCell);*/
+        tableRowTag.append(tableImageCell);
        
         var tableNameCell = $("<td>");
         var aTag2 = $("<a>");
