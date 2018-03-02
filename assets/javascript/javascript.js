@@ -241,7 +241,7 @@ function displaySearchResult(tmEventList) {
     var displayResults = $("#displayResults");
     var tableTag = $("<table>");
     tableTag.addClass("pure-table");
-    var tableHeaderTag = $("<tr><th>Event Name</th><th>Date</th></tr>");
+    var tableHeaderTag = $("<tr><th>Image</th><th>Event Name</th><th>Date</th></tr>");
     tableHeaderTag.css({'color': '#885EAD'});
     tableTag.append(tableHeaderTag);
     for (var i = 0; i < tmEventList.length; i++) {
@@ -251,15 +251,15 @@ function displaySearchResult(tmEventList) {
         aTag.attr("id", tmEventList[i].id);
         aTag.addClass("idQueryString");
         aTag.attr("href", "event.html?id=" + tmEventList[i].id);
-        // aTag.attr("lat",tmEventList[i].venuesLatitude);
-        // aTag.attr("long",tmEventList[i].venuesLongitude);
-        //localStorage.setItem(tmEventList[i].id,tmEventList[i].venuesLatitude+" "+tmEventList[i].venuesLongitude);
+        aTag.attr("lat",tmEventList[i].venuesLatitude);
+        aTag.attr("long",tmEventList[i].venuesLongitude);
+        localStorage.setItem(tmEventList[i].id,tmEventList[i].venuesLatitude+" "+tmEventList[i].venuesLongitude);
        
-        /*var imageTag = $("<img>");
+        var imageTag = $("<img>");
         imageTag.attr("src", tmEventList[i].imageUrlSmall);
         aTag.append(imageTag);
         tableImageCell.append(aTag);
-        tableRowTag.append(tableImageCell);*/
+        tableRowTag.append(tableImageCell);
        
         var tableNameCell = $("<td>");
         var aTag2 = $("<a>");
