@@ -34,7 +34,8 @@ function initMap() {
     var initialPosition = new google.maps.Marker({
         position: local,
         map: map,
-        title: eventName
+        title: eventName,
+        label:"!"
     });
     google.maps.event.addListener(initialPosition, 'click', function () {
         infowindow.setContent(eventName);
