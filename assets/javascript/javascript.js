@@ -1,5 +1,6 @@
 /* Global variables, CONST, and objects */
 const TM_KEY = "Lpdy3vX87eDAFfSO7RcgKAaQZzL4rsRK";
+const GOOGLE_KEY = "AIzaSyDHxneOmC7wPyuap2-wMrNaTi9_i3o4Abo";
 const TM_SIZE = 25;
 const TM_RADIUS = 53; // miles
 var windowLatitude = "";
@@ -97,6 +98,7 @@ function tmEventSearch(userInput) {
     if (userInput.keyword !== '' && userInput.keyword != null) {
         queryParameters += "&keyword=" + userInput.keyword;
     }
+    //console.log(windowLatitude);
     console.log(userInput.geoPoint());
     if (userInput.startDate !== '' && userInput.startDate != null) {
         var myDate = new Date(userInput.startDate);
@@ -146,6 +148,7 @@ function tmEventSearch(userInput) {
         console.log(response);
         console.log("Number of events in your search is: " + countEvents);
         for (var i = 0; i < response._embedded.events.length; i++) {
+          //  console.log(response._embedded.events[i]);
             var id = response._embedded.events[i].id;
             var name = response._embedded.events[i].name;
             var url = response._embedded.events[i].url;
@@ -162,6 +165,8 @@ function tmEventSearch(userInput) {
             else {
                 var genreName = "Unknown";
             }
+            //var eventLat=response._embedded.events[i]._embedded.venues[0].location.latitude;
+            //var eventLong=response._embedded.events[i]._embedded.venues[0].location.longitude;
             var startlocalDate = response._embedded.events[i].dates.start.localDate;
             var startlocalTime = response._embedded.events[i].dates.start.localTime;
             var distance = response._embedded.events[i].distance;
@@ -230,12 +235,14 @@ function tmEventSearch(userInput) {
     return tmEventList;
 
 }
+// we need to work on this to add some css
 function displaySearchResult(tmEventList) {
     if (tmEventList.length === 0) { return false; }
     var displayResults = $("#displayResults");
     var tableTag = $("<table>");
     tableTag.addClass("pure-table");
-    var tableHeaderTag = $("<tr><th>Image</th><th>Event Name</th><th>Date</th>");
+    var tableHeaderTag = $("<tr><th>Event Name</th><th>Date</th></tr>");
+    tableHeaderTag.css({'color': '#885EAD'});
     tableTag.append(tableHeaderTag);
     for (var i = 0; i < tmEventList.length; i++) {
         var tableRowTag = $("<tr>");
@@ -244,30 +251,39 @@ function displaySearchResult(tmEventList) {
         aTag.attr("id", tmEventList[i].id);
         aTag.addClass("idQueryString");
         aTag.attr("href", "event.html?id=" + tmEventList[i].id);
-        var imageTag = $("<img>");
+        // aTag.attr("lat",tmEventList[i].venuesLatitude);
+        // aTag.attr("long",tmEventList[i].venuesLongitude);
+        //localStorage.setItem(tmEventList[i].id,tmEventList[i].venuesLatitude+" "+tmEventList[i].venuesLongitude);
+       
+        /*var imageTag = $("<img>");
         imageTag.attr("src", tmEventList[i].imageUrlSmall);
         aTag.append(imageTag);
         tableImageCell.append(aTag);
-        tableRowTag.append(tableImageCell);
+        tableRowTag.append(tableImageCell);*/
+       
         var tableNameCell = $("<td>");
         var aTag2 = $("<a>");
         aTag2.addClass("idQueryString");
         aTag2.attr("href", "event.html?id=" + tmEventList[i].id);
-        tableNameCell.html("<h5>" + tmEventList[i].name + "</h5>");
+        tableNameCell.append("<h5>" + tmEventList[i].name + "</h5>" );
         aTag2.append(tableNameCell);
         tableRowTag.append(aTag2);
+        
         var tableDateCell = $("<td>");
-        tableDateCell.html("<h5>" + tmEventList[i].startlocalDate + "</h5>");
+        tableDateCell.prepend("<h5>" + tmEventList[i].startlocalDate + "</h5>");
         tableRowTag.append(tableDateCell);
         tableTag.append(tableRowTag);
     }
     displayResults.append(tableTag);
 }
 function retrieveData4EventDetailsPage() {
+    console.log("we are in retrieve data!");
     var queryStringId = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     var queryId = queryStringId[0].substring(3, queryStringId[0].length);
+    console.log(queryId);
     var tmEventListObject = localStorage.getItem("tmEventListString");
     var tmEventList = JSON.parse(tmEventListObject);
+    console.log(tmEventList);
     var index = 0;
     for (var i = 0; i < tmEventList.length; i++) {
         var objSingle = tmEventList[i];
@@ -276,6 +292,7 @@ function retrieveData4EventDetailsPage() {
             break;
         }
     }
+    console.log(tmEventList[index]);
     displayEventDetails(tmEventList[index]);
 }
 
@@ -294,13 +311,13 @@ function displayEventDetails(tmEvent) {
     eventName.text(tmEvent.name);
     listULholder.append(eventName);
     var eventLocation = $("<h4>")
-    eventLocation.html("Address: "+tmEvent.venuesAddress + "<span> | </span>" + tmEvent.venuesCity + "<span> | </span>" + tmEvent.venuesState);
+    eventLocation.html("ADDRESS: "+tmEvent.venuesAddress + "<span> | </span>" + tmEvent.venuesCity + "<span> | </span>" + tmEvent.venuesState);
     listULholder.append(eventLocation);
     var eventDate = $("<h4>")
-    eventDate.text("Date: "+tmEvent.startlocalDate);
+    eventDate.text("DATE: "+tmEvent.startlocalDate);
     listULholder.append(eventDate);
     var eventPrice = $("<h4>")
-    eventPrice.html("Price: "+tmEvent.currencyPrice + " $" + tmEvent.minPrice + "<span> -- </span>" + tmEvent.maxPrice);
+    eventPrice.html("PRICE: "+tmEvent.currencyPrice + " $" + tmEvent.minPrice + "<span> - </span>" + tmEvent.maxPrice);
     listULholder.append(eventPrice);
     var purchaseTicket=$("#backButton");
     var btnPurchaseTicket=$("<button>");
@@ -315,6 +332,7 @@ function retrieveSearchResults4HomePage() {
     var queryStringId = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     var queryId = queryStringId[0].substring(7, queryStringId[0].length);
     if (queryId === "true") {
+        console.log("reload=" + queryId);
         var tmEventListObject = localStorage.getItem("tmEventListString");
         var mytmEventList = JSON.parse(tmEventListObject);
         displaySearchResult(mytmEventList);
@@ -326,7 +344,7 @@ $(document).ready(function () {
     if (fileName === "event.html") {
         retrieveData4EventDetailsPage();
     }
-    if (fileName === "index.html") {
+    if (fileName === "main.html") {
         retrieveSearchResults4HomePage();
     }
 });
@@ -334,10 +352,11 @@ $(document).on("click","#btnPurchase",buyTicket);
 function buyTicket(){
     var url=$(this).attr("data-url");
     window.open(url,"_blank");
+    console.log($(this).attr("data-url"));
 };
 $("#btnBackSearch").on("click", function (event) {
     event.preventDefault();
-    window.location.href = "index.html?reload=true";
+    window.location.href = "main.html?reload=true";
 });
 $("#btnSubmit").on("click", function (event) {
     event.preventDefault();
@@ -375,6 +394,11 @@ $("#btnReset").on("click", function (event) {
     $("#endDate").val("");
     $("#location").val("");
     localStorage.removeItem("tmEventListString");
-    window.location.href="index.html";
+    window.location.href="main.html";
 })
+// $(document).on("click",".idQueryString",function(){
+//     localStorage.setItem("eventLat",this.attr("lat"));
+//     localStorage.setItem("eventLong",this.attr("long"));
+// })
+
 getUserCoords();
