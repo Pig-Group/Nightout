@@ -43,7 +43,8 @@ var userInput = function (keyword, startDate, endDate, location, latitude, longi
     };
 }
 
-// Main functions are here
+// Main functions go here
+// function to get latitude longitude user location
 var getUserCoords = function () {
     if (localStorage.getItem("windowLatitude") === null || localStorage.getItem("windowLongitude") === null) {
         var latitude;
@@ -73,7 +74,7 @@ var getUserCoords = function () {
         }
     }
 }
-// this function using regular expression: city rturns TRUE
+// this function using regular expression to find out the user location input is city or zip code.
 function isCity(location) {
     location = location.trim();
     var zipORCityText = new RegExp("^([0-9]{5}|[a-zA-Z][a-zA-Z ]{0,49})$");
@@ -303,7 +304,7 @@ function displayEventDetails(tmEvent) {
     eventDate.text("DATE: "+tmEvent.startlocalDate);
     listULholder.append(eventDate);
     var eventPrice = $("<h4>")
-    eventPrice.html("PRICE: "+tmEvent.currencyPrice + " $" + tmEvent.minPrice + "<span> - </span>" + tmEvent.maxPrice);
+    eventPrice.html("Price: "+tmEvent.currencyPrice + " $" + tmEvent.minPrice + "<span> - </span>" + tmEvent.maxPrice);
     listULholder.append(eventPrice);
     var purchaseTicket=$("#backButton");
     var btnPurchaseTicket=$("<button>");
@@ -380,4 +381,6 @@ $("#btnReset").on("click", function (event) {
     localStorage.removeItem("tmEventListString");
     window.location.href="main.html";
 })
+
+
 getUserCoords();
